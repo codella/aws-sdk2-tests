@@ -20,12 +20,12 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 @Testcontainers
 public class S3AsyncClientTest {
 
-  DockerImageName localstackImage = DockerImageName.parse("localstack/localstack:3.5.0");
+  private static final DockerImageName localstackImage = DockerImageName.parse("localstack/localstack:3.5.0");
 
   @Container
-  public LocalStackContainer localstack = new LocalStackContainer(localstackImage).withServices(S3);
+  private final LocalStackContainer localstack = new LocalStackContainer(localstackImage).withServices(S3);
 
-  public S3AsyncClient s3AsyncClient;
+  private S3AsyncClient s3AsyncClient;
 
   @BeforeEach
   public void setUp() {
@@ -42,7 +42,7 @@ public class S3AsyncClientTest {
   }
 
   @Test
-  public void testSimplePutAndGet() throws Exception {
+  public void testAsyncPutObject() throws Exception {
     var createBucketRes = s3AsyncClient.createBucket(CreateBucketRequest.builder()
         .bucket("test-bucket")
         .build()).get();
